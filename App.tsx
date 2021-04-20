@@ -1,21 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
+import { Welcome } from './src/pages/Welcome';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Seja bem vindo ao projeto do PlantManager</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <Welcome />
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
