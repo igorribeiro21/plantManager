@@ -119,3 +119,12 @@ export async function removePlant(id: string): Promise<void> {
         JSON.stringify(plants));
 }
 
+export async function editPlant(id: string,newDate: Date): Promise<void> {
+    const data = await AsyncStorage.getItem('@plantmanager:plants');
+    const plants = data ? (JSON.parse(data) as StoragePlantProps) : {};
+ 
+    plants[id].data.dateTimeNotification = newDate;
+
+    await AsyncStorage.setItem('@plantmanager:plants',JSON.stringify(plants));
+}
+

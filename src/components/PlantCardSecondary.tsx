@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Alert,
     StyleSheet,
     Text,
     View
@@ -10,21 +11,42 @@ import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 import { SvgFromUri } from 'react-native-svg';
 import Animated from 'react-native-reanimated';
-import { Feather } from '@expo/vector-icons';
+import { Feather, AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/core';
 
 interface PlantProps extends RectButtonProps {
     data: {
         name: string;
         photo: string;
         hour: string;
+        dateTimeNotification: Date;
+        id: string;
     };
     handleRemove: () => void;
 }
 
 export const PlantCardSecondary = ({ data, handleRemove, ...rest }: PlantProps) => {
+    const navigation = useNavigation();
+
+    function handleEdit() {
+        Alert.alert(`Deseja alterar o horário da planta ${data.name}?`, `${data.hour}`, [
+            {
+                text: 'Não',
+                style: 'cancel'
+            }, {
+                text: 'Sim',
+                onPress: () => navigation.navigate('EditPlant', {
+                    dateTimeNotification: `${data.dateTimeNotification}`,
+                    hour: `${data.hour}`,
+                    name: `${data.name}`,
+                    photo: `${data.photo}`,
+                    id: `${data.id}`
+                })
+            }
+        ]);
+    }
     return (
         <Swipeable
-            overshootRight={false}
             renderRightActions={() => (
                 <Animated.View>
                     <View>
@@ -39,6 +61,22 @@ export const PlantCardSecondary = ({ data, handleRemove, ...rest }: PlantProps) 
                             />
 
 
+                        </RectButton>
+                    </View>
+                </Animated.View>
+            )}
+            renderLeftActions={() => (
+                <Animated.View>
+                    <View>
+                        <RectButton
+                            style={styles.buttonEdit}
+                            onPress={handleEdit}
+                        >
+                            <AntDesign
+                                name="edit"
+                                color={colors.white}
+                                size={32}
+                            />
                         </RectButton>
                     </View>
                 </Animated.View>
@@ -115,5 +153,16 @@ const styles = StyleSheet.create({
         position: 'relative',
         right: 20,
         paddingLeft: 15
-    }
+    },
+    buttonEdit: {
+        width: 100,
+        height: 85,
+        backgroundColor: colors.orange,
+        marginTop: 15,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        left: 10
+    },
 });
